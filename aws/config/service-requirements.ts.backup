@@ -1,0 +1,273 @@
+// Service infrastructure requirements based on your actual architecture
+
+export interface ServiceInfrastructureConfig {
+  environment: string;
+  
+  // Database Configuration
+  databases: {
+    [serviceName: string]: {
+      engine: 'postgres' | 'mysql';
+      version: string;
+      instanceClass: string;
+      allocatedStorage: number;
+      multiAZ: boolean;
+    };
+  };
+  
+  // Cache Configuration
+  cache: {
+    nodeType: string;
+    numCacheNodes: number;
+    engine: 'redis';
+    engineVersion: string;
+  };
+  
+  // Message Broker Configuration
+  messageBroker: {
+    engine: 'rabbitmq';
+    hostInstanceType: string;
+    deploymentMode: 'SINGLE_INSTANCE' | 'CLUSTER';
+  };
+  
+  // Search Configuration
+  search: {
+    engine: 'opensearch';
+    instanceType: string;
+    instanceCount: number;
+    masterNodes: number;
+  };
+}
+
+export const SERVICE_INFRASTRUCTURE: Record<string, ServiceInfrastructureConfig> = {
+  local: {
+    environment: 'local',
+    databases: {
+      'user-service': {
+        engine: 'postgres',
+        version: '14.9',
+        instanceClass: 'db.t3.micro',
+        allocatedStorage: 20,
+        multiAZ: false,
+      },
+      'product-service': {
+        engine: 'postgres', 
+        version: '14.9',
+        instanceClass: 'db.t3.micro',
+        allocatedStorage: 20,
+        multiAZ: false,
+      },
+      'order-service': {
+        engine: 'postgres',
+        version: '14.9', 
+        instanceClass: 'db.t3.micro',
+        allocatedStorage: 20,
+        multiAZ: false,
+      },
+      'payment-service': {
+        engine: 'postgres',
+        version: '14.9',
+        instanceClass: 'db.t3.micro', 
+        allocatedStorage: 20,
+        multiAZ: false,
+      },
+      'inventory-service': {
+        engine: 'postgres',
+        version: '14.9',
+        instanceClass: 'db.t3.micro',
+        allocatedStorage: 20,
+        multiAZ: false,
+      },
+    },
+    cache: {
+      nodeType: 'cache.t3.micro',
+      numCacheNodes: 1,
+      engine: 'redis',
+      engineVersion: '7.0',
+    },
+    messageBroker: {
+      engine: 'rabbitmq',
+      hostInstanceType: 'mq.t3.micro',
+      deploymentMode: 'SINGLE_INSTANCE',
+    },
+    search: {
+      engine: 'opensearch',
+      instanceType: 't3.small.search',
+      instanceCount: 1,
+      masterNodes: 0,
+    },
+  },
+
+  dev: {
+    environment: 'dev',
+    databases: {
+      'user-service': {
+        engine: 'postgres',
+        version: '14.9',
+        instanceClass: 'db.t3.small',
+        allocatedStorage: 100,
+        multiAZ: false,
+      },
+      'product-service': {
+        engine: 'postgres',
+        version: '14.9', 
+        instanceClass: 'db.t3.small',
+        allocatedStorage: 100,
+        multiAZ: false,
+      },
+      'order-service': {
+        engine: 'postgres',
+        version: '14.9',
+        instanceClass: 'db.t3.small', 
+        allocatedStorage: 100,
+        multiAZ: false,
+      },
+      'payment-service': {
+        engine: 'postgres',
+        version: '14.9',
+        instanceClass: 'db.t3.small',
+        allocatedStorage: 100,
+        multiAZ: false,
+      },
+      'inventory-service': {
+        engine: 'postgres',
+        version: '14.9',
+        instanceClass: 'db.t3.small',
+        allocatedStorage: 100,
+        multiAZ: false,
+      },
+    },
+    cache: {
+      nodeType: 'cache.t3.small',
+      numCacheNodes: 2,
+      engine: 'redis',
+      engineVersion: '7.0',
+    },
+    messageBroker: {
+      engine: 'rabbitmq',
+      hostInstanceType: 'mq.t3.small',
+      deploymentMode: 'SINGLE_INSTANCE',
+    },
+    search: {
+      engine: 'opensearch',
+      instanceType: 't3.medium.search',
+      instanceCount: 2,
+      masterNodes: 3,
+    },
+  },
+
+  staging: {
+    environment: 'staging',
+    databases: {
+      'user-service': {
+        engine: 'postgres',
+        version: '14.9',
+        instanceClass: 'db.r5.large',
+        allocatedStorage: 500,
+        multiAZ: true,
+      },
+      'product-service': {
+        engine: 'postgres',
+        version: '14.9',
+        instanceClass: 'db.r5.large',
+        allocatedStorage: 500,
+        multiAZ: true,
+      },
+      'order-service': {
+        engine: 'postgres',
+        version: '14.9',
+        instanceClass: 'db.r5.large',
+        allocatedStorage: 500,
+        multiAZ: true,
+      },
+      'payment-service': {
+        engine: 'postgres',
+        version: '14.9',
+        instanceClass: 'db.r5.large',
+        allocatedStorage: 500,
+        multiAZ: true,
+      },
+      'inventory-service': {
+        engine: 'postgres',
+        version: '14.9',
+        instanceClass: 'db.r5.large',
+        allocatedStorage: 500,
+        multiAZ: true,
+      },
+    },
+    cache: {
+      nodeType: 'cache.r5.large',
+      numCacheNodes: 3,
+      engine: 'redis',
+      engineVersion: '7.0',
+    },
+    messageBroker: {
+      engine: 'rabbitmq',
+      hostInstanceType: 'mq.m5.large',
+      deploymentMode: 'CLUSTER',
+    },
+    search: {
+      engine: 'opensearch',
+      instanceType: 'm5.large.search',
+      instanceCount: 3,
+      masterNodes: 3,
+    },
+  },
+
+  prod: {
+    environment: 'prod',
+    databases: {
+      'user-service': {
+        engine: 'postgres',
+        version: '14.9',
+        instanceClass: 'db.r5.xlarge',
+        allocatedStorage: 1000,
+        multiAZ: true,
+      },
+      'product-service': {
+        engine: 'postgres',
+        version: '14.9',
+        instanceClass: 'db.r5.xlarge',
+        allocatedStorage: 1000,
+        multiAZ: true,
+      },
+      'order-service': {
+        engine: 'postgres',
+        version: '14.9',
+        instanceClass: 'db.r5.xlarge',
+        allocatedStorage: 1000,
+        multiAZ: true,
+      },
+      'payment-service': {
+        engine: 'postgres',
+        version: '14.9',
+        instanceClass: 'db.r5.xlarge',
+        allocatedStorage: 1000,
+        multiAZ: true,
+      },
+      'inventory-service': {
+        engine: 'postgres',
+        version: '14.9',
+        instanceClass: 'db.r5.xlarge',
+        allocatedStorage: 1000,
+        multiAZ: true,
+      },
+    },
+    cache: {
+      nodeType: 'cache.r5.xlarge',
+      numCacheNodes: 6,
+      engine: 'redis',
+      engineVersion: '7.0',
+    },
+    messageBroker: {
+      engine: 'rabbitmq',
+      hostInstanceType: 'mq.m5.xlarge',
+      deploymentMode: 'CLUSTER',
+    },
+    search: {
+      engine: 'opensearch',
+      instanceType: 'm5.xlarge.search',
+      instanceCount: 6,
+      masterNodes: 3,
+    },
+  },
+};
