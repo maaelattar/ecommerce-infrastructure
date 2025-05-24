@@ -5,6 +5,7 @@ import { EnvironmentProviderFactory } from './providers/environment-provider';
 import { VpcConstruct } from './constructs/networking/vpc-construct';
 import { DatabaseConstruct } from './constructs/data/database-construct';
 import { CacheConstruct } from './constructs/data/cache-construct';
+import { AmazonMQConstruct } from './constructs/messaging/amazon-mq-construct';
 
 export interface EcommerceInfrastructureProps extends StackProps {
   config: EnvironmentConfig;
@@ -22,6 +23,7 @@ export class EcommerceInfrastructure extends Stack {
   public readonly vpc: VpcConstruct;
   public readonly database: DatabaseConstruct;
   public readonly cache: CacheConstruct;
+  public readonly messaging: AmazonMQConstruct;
 
   constructor(scope: Construct, id: string, props: EcommerceInfrastructureProps) {
     super(scope, id, props);
@@ -45,8 +47,14 @@ export class EcommerceInfrastructure extends Stack {
       securityGroup: this.vpc.securityGroups.get('cache')!,
     });
 
+    // Create messaging layer (Amazon MQ)
+    this.messaging = new AmazonMQConstruct(this, 'Messaging', {
+      provider,
+      vpc: this.vpc.vpc,
+      securityGroup: this.vpc.securityGroups.get('messaging')!,
+    });
+
     // TODO: Add other constructs when needed
-    // this.messaging = new MessagingConstruct(this, 'Messaging', { ... });
     // this.search = new SearchConstruct(this, 'Search', { ... });
     // this.storage = new StorageConstruct(this, 'Storage', { ... });
   }

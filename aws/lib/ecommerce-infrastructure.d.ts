@@ -4,6 +4,7 @@ import { EnvironmentConfig } from '../config/environments';
 import { VpcConstruct } from './constructs/networking/vpc-construct';
 import { DatabaseConstruct } from './constructs/data/database-construct';
 import { CacheConstruct } from './constructs/data/cache-construct';
+import { AmazonMQConstruct } from './constructs/messaging/amazon-mq-construct';
 export interface EcommerceInfrastructureProps extends StackProps {
     config: EnvironmentConfig;
 }
@@ -19,5 +20,6 @@ export declare class EcommerceInfrastructure extends Stack {
     readonly vpc: VpcConstruct;
     readonly database: DatabaseConstruct;
     readonly cache: CacheConstruct;
+    readonly messaging: AmazonMQConstruct;
     constructor(scope: Construct, id: string, props: EcommerceInfrastructureProps);
 }

@@ -1,0 +1,67 @@
+services:
+  # =============================================================================
+  # AWS LOCALSTACK - All AWS Services in One Container
+  # =============================================================================
+  
+  localstack:
+    image: localstack/localstack:3.0
+    container_name: ecommerce-localstack
+    restart: unless-stopped
+    environment:
+      DEBUG: 1
+      SERVICES: >
+        rds,elasticache,mq,cognito-idp,s3,sqs,dynamodb,lambda,apigateway,
+        cloudformation,secretsmanager,ssm,iam,sts,logs
+      DATA_DIR: /var/lib/localstack/data
+      HOST_TMP_FOLDER: /tmp/localstack
+      DOCKER_HOST: unix:///var/run/docker.sock
+      PERSISTENCE: 1
+      
+      # PostgreSQL Configuration
+      RDS_PG_CUSTOM_VERSIONS: 1
+      
+      # LocalStack Pro features (if you have license)
+      LOCALSTACK_API_KEY: ${LOCALSTACK_API_KEY:-}
+      
+      # AWS Configuration
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      
+    volumes:
+      - localstack_data:/var/lib/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./localstack/init:/etc/localstack/init/ready.d
+      - ./localstack/cdk-bootstrap:/tmp/cdk-bootstrap
+    ports:
+      - "4566:4566"       # Main LocalStack endpoint
+      - "4510-4559:4510-4559"  # External service ports
+    networks:
+      - ecommerce-network
+    profiles:
+      - core
+
+
+
+
+
+# =============================================================================
+# NETWORKS
+# =============================================================================
+
+networks:
+  ecommerce-network:
+    name: ecommerce-network
+    driver: bridge
+    attachable: true
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# =============================================================================
+# VOLUMES
+# =============================================================================
+
+volumes:
+  localstack_data:
+    name: ecommerce_localstack_data

@@ -13,6 +13,8 @@ export declare class AwsProvider extends EnvironmentProvider {
     getRemovalPolicy(): RemovalPolicy.DESTROY | RemovalPolicy.RETAIN;
     getCacheConfig(): CacheConfiguration;
     getMessagingConfig(): MessagingConfiguration;
+    getAmazonMQInstanceType(): string;
+    shouldExposePublicly(): boolean;
     getSearchConfig(): SearchConfiguration;
     getStorageConfig(): StorageConfiguration;
 }

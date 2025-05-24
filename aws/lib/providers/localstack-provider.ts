@@ -64,8 +64,16 @@ export class LocalStackProvider extends EnvironmentProvider {
     return {
       deploymentMode: 'SINGLE_INSTANCE',
       hostInstanceType: 'mq.t3.micro',
-      engineVersion: '3.10.10',
+      engineVersion: '3.11.20',
     };
+  }
+
+  getAmazonMQInstanceType(): string {
+    return 'mq.t3.micro';
+  }
+
+  shouldExposePublicly(): boolean {
+    return true; // LocalStack development access
   }
 
   getSearchConfig(): SearchConfiguration {

@@ -26,6 +26,8 @@ export abstract class EnvironmentProvider {
 
   // Messaging configuration methods
   abstract getMessagingConfig(): MessagingConfiguration;
+  abstract getAmazonMQInstanceType(): string;
+  abstract shouldExposePublicly(): boolean;
 
   // Search configuration methods
   abstract getSearchConfig(): SearchConfiguration;
@@ -40,6 +42,14 @@ export abstract class EnvironmentProvider {
 
   get isLocalStack(): boolean {
     return this.config.isLocalStack;
+  }
+
+  get region(): string {
+    return this.config.region;
+  }
+
+  isProduction(): boolean {
+    return this.config.environment === 'prod';
   }
 }
 

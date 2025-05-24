@@ -63,8 +63,16 @@ export class AwsProvider extends EnvironmentProvider {
     return {
       deploymentMode: this.config.messageBroker.deploymentMode,
       hostInstanceType: this.config.messageBroker.hostInstanceType,
-      engineVersion: '3.10.10',
+      engineVersion: '3.11.20',
     };
+  }
+
+  getAmazonMQInstanceType(): string {
+    return this.config.messageBroker.hostInstanceType;
+  }
+
+  shouldExposePublicly(): boolean {
+    return false; // Private access in AWS
   }
 
   getSearchConfig(): SearchConfiguration {

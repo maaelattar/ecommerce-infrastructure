@@ -13,6 +13,8 @@ export declare class LocalStackProvider extends EnvironmentProvider {
     getRemovalPolicy(): RemovalPolicy;
     getCacheConfig(): CacheConfiguration;
     getMessagingConfig(): MessagingConfiguration;
+    getAmazonMQInstanceType(): string;
+    shouldExposePublicly(): boolean;
     getSearchConfig(): SearchConfiguration;
     getStorageConfig(): StorageConfiguration;
 }
